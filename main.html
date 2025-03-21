@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Wallet Connect Demo</title>
+    <!-- ethers をグローバルに読み込む -->
+    <script src="https://unpkg.com/ethers/dist/ethers.umd.min.js" type="application/javascript"></script>
+</head>
+<body>
+    <button onclick="connectWallet()">ウォレット接続</button>
+    
+    <script>
+        async function connectWallet() {
+                if (window.ethereum) {
+                // ethers v6の場合
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = await provider.getSigner();
+                const address = await signer.getAddress();
+                console.log("signer:", signer);
+                console.log("接続されたアドレス:", address);
+                await sendAddressToSheet(address);
+                } else {
+                alert("MetaMaskなどのウォレット拡張機能が必要です。");
+                }
+        }
+
+        async function sendAddressToSheet(address) {
+            const url = "https://script.google.com/macros/s/AKfycbxZRK_gEEHRHWpv6s8-PI-ecjdlOz8Q4KQzJsXpoK18Jto3Ksu9GrdPcEdsokRzX-1S/exec"; 
+            const payload = { address: address };
+            try {
+                const response = await fetch(url, {
+                    mode: "no-cors",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                console.log("送信結果:", result);
+            } catch (error) {
+                console.error("送信エラー:", error);
+            }
+        }
+    </script>
+</body>
+</html>
