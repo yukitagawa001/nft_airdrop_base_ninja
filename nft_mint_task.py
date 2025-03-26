@@ -15,6 +15,7 @@ ADMIN_PRIVATE_KEY = os.getenv('ADMIN_PRIVATE_KEY')
 RPC_URL = os.getenv('RPC_URL')
 RANGE_NAME = "Sheet1!A2:A"
 POLL_INTERVAL = 5  # シートチェックの間隔（秒）
+NFT_URI = os.getenv('NFT_URI')
 
 # ===== Google Sheets API の認証 =====
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -53,7 +54,7 @@ def mint_nft(recipient_address):
     Foundry の cast コマンドを利用して NFT の mint 処理を実行する関数
     """
     cmd = [
-        "cast", "send", CONTRACT_ADDRESS, "mintTo(address,string)", recipient_address, "ipfs://QmYourValidHash",
+        "cast", "send", CONTRACT_ADDRESS, "mintTo(address,string)", recipient_address, NFT_URI,
         "--private-key", ADMIN_PRIVATE_KEY, "--rpc-url", RPC_URL
     ]
     try:
