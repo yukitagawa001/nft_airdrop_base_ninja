@@ -11,7 +11,7 @@ pip install
 以下のコマンドを実行してスクリプトを起動してください:
 
 ```bash
-python main.py
+python nft_mint_task.py
 ```
 
 スクリプトが正常に動作するためには、事前に `.env` ファイルに必要な値を設定してください。
